@@ -15,36 +15,46 @@ char word[32];
 long long int hash_input = 945924806726376;
 bool verbose = false;
 
+bool is_hash_valid(long long int h) {
+ if (h <= 7) return false;
+ return true;
+}
+
 int check_args(int argc,char *argv[]) {
  if (argc <= 1) return 0;
  int mode = UNSET;
  for (int i = 1; i < argc; i++) {
   if (strcmp(argv[i],"--brute-force") == 0) {
    if (mode != UNSET) goto LABERR;
+   mode = BRUTE_FORCE;
    if (argc >= i+2) {
     long long int n = atoll(argv[++i]);
     if (n > 0) hash_input = n;
+   } else {
+    scanf("%lld",&hash_input);
    }
-   mode = BRUTE_FORCE;
    continue;
   }
   if (strcmp(argv[i],"--display-hash") == 0) {
    if (mode != UNSET) goto LABERR;
+   mode = DISPLAY_HASH;
    if (argc > i+1) {
     strcpy(word,argv[++i]);
-    mode = DISPLAY_HASH;
     continue;
+   } else {
+    scanf("%s",word);
    }
-   printf("Missing required word to translate.\n");
-   return ERROR;
+   continue;
   }
   if (strcmp(argv[i],"--unravel-hash") == 0) {
    if (mode != UNSET) goto LABERR;
+   mode = UNRAVEL_HASH;
    if (argc > i+1) {
     long long int n = atoll(argv[++i]);
     if (n > 0) hash_input = n;
+   } else {
+    scanf("%lld",&hash_input);
    }
-   mode = UNRAVEL_HASH;
    continue;
   }
   if (strcmp(argv[i],"--verbose") == 0 || strcmp(argv[i],"-v") == 0) {
@@ -103,6 +113,10 @@ int unravel(long long int h) {
 int main(int argc, char *argv[]) {
  switch (check_args(argc,argv)) {
   case BRUTE_FORCE: {
+   if (hash_input <= 7) {
+    printf("Error: Invalid hash\n");
+    return ERROR;
+   }
    if (verbose) {
     printf("Brute-forcing a result. This might take a while.\n");
    }
@@ -124,6 +138,10 @@ int main(int argc, char *argv[]) {
    return 0;
   }
   case UNRAVEL_HASH: {
+   if (!is_hash_valid(hash_input)) {
+    printf("Error: Invalid hash\n");
+    return ERROR;
+   }
    unravel(hash_input);
    if (verbose) {
     printf("The magic word is: %s\n",word);
