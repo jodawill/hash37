@@ -61,13 +61,13 @@ int check_args(int argc,char *argv[]) {
    verbose = true;
    continue;
   }
-  printf("Invalid command: %s\n",argv[i]);
+  fprintf(stderr,"Error: Invalid command: %s\n",argv[i]);
   return ERROR;
  }
  return mode;
 
  LABERR: {
-  printf("Error: Only one mode may be specified.\n");
+  fprintf(stderr,"Error: Only one mode may be specified.\n");
   return ERROR;
  }
 }
@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
  switch (check_args(argc,argv)) {
   case BRUTE_FORCE: {
    if (hash_input <= 7) {
-    printf("Error: Invalid hash\n");
+    fprintf(stderr,"Error: Invalid hash\n");
     return ERROR;
    }
    if (verbose) {
@@ -139,7 +139,7 @@ int main(int argc, char *argv[]) {
   }
   case UNRAVEL_HASH: {
    if (!is_hash_valid(hash_input)) {
-    printf("Error: Invalid hash\n");
+    fprintf(stderr,"Error: Invalid hash\n");
     return ERROR;
    }
    unravel(hash_input);
