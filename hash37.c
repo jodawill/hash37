@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #define ERROR		-1
+#define NO_EXIT		 0
 #define EXIT		 1
 #define BRUTE_FORCE	 2
 #define DISPLAY_HASH	 3
@@ -50,17 +50,17 @@ long long int hash(char *s) {
  return h;
 }
 
-bool check(char word[], int pos) {
+int check(char word[], int pos) {
  for (int i = 0; i < strlen(letters); i++) {
   word[pos] = letters[i];
-  if (hash(word) == 945924806726376) {
+  if (hash(word) == hash_input) {
    printf("The magic word is: %s\n",word);
    return EXIT;
   }
   if (pos > 0)
-   if (check(word,pos-1) == EXIT) return true;
+   if (check(word,pos-1) == EXIT) return EXIT;
  }
- return false;
+ return NO_EXIT;
 }
 
 int unravel(long long int h) {
