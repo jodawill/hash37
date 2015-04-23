@@ -40,12 +40,12 @@ int check_args(int argc,char *argv[]) {
   }
   if (strcmp(argv[i],"--unravel-hash") == 0) {
    if (mode != UNSET) goto LABERR;
-   goto LABERR;
    if (argc > i+1) {
     long long int n = atoll(argv[++i]);
     if (n > 0) hash_input = n;
    }
    mode = UNRAVEL_HASH;
+   continue;
   }
   if (strcmp(argv[i],"--verbose") == 0 || strcmp(argv[i],"-v") == 0) {
    verbose = true;
